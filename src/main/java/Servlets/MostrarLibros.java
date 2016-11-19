@@ -87,34 +87,7 @@ public class MostrarLibros extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       /* try (PrintWriter out = response.getWriter()) {
        
-       ArrayList<String> nombresLibros = new ArrayList();
-       int cod_al = (int) request.getSession().getAttribute("Codigo");
-       DAO dat = new DAO();
-       ResultSet rs;
-            try {
-                rs = dat.leerLibros(20112449);
-            } catch (SQLException ex) {
-                Logger.getLogger(MostrarLibros.class.getName()).log(Level.SEVERE, null, ex);
-            }
-       String nombreAlumno = "";
-            try {
-                 rs = dat.leerLibros(20112449);
-                while (rs.next()){
-                    nombresLibros.add(rs.getString("lib.nombre"));
-                    if (nombreAlumno==""){
-                        nombreAlumno=rs.getString("alu.nombre");
-                    }
-                }    } catch (SQLException ex) {
-                Logger.getLogger(MostrarLibros.class.getName()).log(Level.SEVERE, null, ex);
-            }
-       request.setAttribute("listaLibros", nombresLibros);
-       request.getSession().setAttribute("Codigo",cod_al);
-       request.getSession().setAttribute("nombre_al", nombreAlumno);
-       request.getRequestDispatcher("Libro.jsp").forward(request,response); 
-       
-    }*/  
     }
 
     /**
