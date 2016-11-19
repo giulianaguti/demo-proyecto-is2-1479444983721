@@ -2,8 +2,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
-<html lang="en" style="    background-color: #18bc9c;
-      ">
+<html lang="en" style="background-color: #18bc9c;">
 
     <head>
 
