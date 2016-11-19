@@ -1,10 +1,7 @@
+<%@ page import="java.util.ArrayList" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<%@page import="java.util.List"%>
-<%@page import="Clases.PC"%>
-<%@page import="Clases.DAO"%>
-<%@ page language="java" contentType="text/html; charset=utf-8"
-         pageEncoding="utf-8"%>
-
+<!DOCTYPE html>
 <html lang="en" style="    background-color: #18bc9c;
       ">
 
@@ -21,19 +18,6 @@
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <!-- Theme CSS -->
         <link href="css/freelancer.min.css" rel="stylesheet">
-        <script>
-            <%
-                Cookie[] cookies = null;
-                cookies = request.getCookies();
-                String idUsuario = "";//usuario logeado
-                for (int i = 0; i < cookies.length; i++) {
-                    System.out.println("cookies: " + cookies[i].getValue() + "-" + cookies[i].getName());
-                    if (cookies[i].getName().equals("idusuario")) {
-                        //idUsuario = cookies[i].getValue();
-                        //System.out.println("cookie: " + idUsuario);
-                    }
-                }%>
-        </script>
 
         <!-- Custom Fonts -->
         <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -43,8 +27,7 @@
     </head>
 
     <body id="page-top" class="index  ">
-        <%DAO d = new DAO();%>
-        <%List<PC> p = d.getPCs();%>
+
         <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
             <div class="container">
 
@@ -52,7 +35,7 @@
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                         <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand" href="Index.jsp">ULima  </a>
+                    <a class="navbar-brand" href="bienvenida.jsp">ULima  </a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
@@ -63,10 +46,10 @@
                             <a href="Cubiculo.jsp">Reservas - Cubiculos</a>
                         </li>
                         <li class="page-scroll">
-                            <a href="Libro.jsp">Renovación - Libros</a>
+                            <a href="MostrarLibros">Renovación - Libros</a>
                         </li>
                         <li class="page-scroll">
-                            <a href="ReservaPC.jsp"> Reservas - PC</a>
+                            <a href="MostrarPC"> Reservas - PC</a>
                         </li>
 
 
@@ -82,53 +65,39 @@
         </nav>
 
         <!-- Header -->
-
         <header>
             <div class="container ">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="intro-text">
-                            <span class="name"><h2>Reservas de Recursos - PC</h2></span>
-
+                            <span class="name"><h2>Reservas de Recursos -  PC</h2></span>
+                            <a href="Libro.jsp"></a>
                             <hr class="star-light">
                             <span class="skills">
+                                <form action="ReservarPC">
+                                    <p>  <!--Alumno: ${nombre_al} -->
+                                        Alumno:
+                                        <%String msg = (String) session.getAttribute("Nombre");
+                                        out.print(msg);%>
+                                    <p>
+                                    <p>Codigo:  ${Codigo}  
+
+                                    <p>
+
+                                    <p>Seleccione el numero de PC <select name="pcReservar" id="pcReservar" class="from-comtrol">
+                                            <c:forEach var="lista" items="${listaPC}">
+                                                <option value="${lista}">${lista}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </p>
+                                    <hr>
+                                    Ingrese la cantidad de horas <input type="text" class="form-control input-lg"  name="cantHoras">
+                                    <hr>
+                                    <input class="btn btn-primary btn-lg btn-block" type="submit" value="Enviar" title="enviar">
+                                </form>
 
                             </span>
-
                         </div>
-                        <!--     <form action="SepararPC.jsp">
-                                 <div class="form-group">
-                                     <button class="btn btn-primary btn-lg btn-block">Reservar PC</button>
-                                 </div> -->
-                        <button class="btn btn-primary btn-lg" onclick="location.reload()" style="float: right">Actualizar</button>
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Disponibilidad</th>
-                                    <th>Ubicación</th>
-
-                                    <th>Hora Inicio</th>
-                                    <th>Hora Fin</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-
-                                <%for (PC c : p) {%>
-                                <tr>
-                                    <td><%=c.getDispo()%></td>
-                                    <td><%=c.getUbicacion()%></td>
-                                    <!-- -->
-                                    <td><%=c.getInicio()%></td>
-                                    <td><%=c.getFin()%></td>
-                                    <!-- pcs-->
-                                    <td><button onclick="reg_pc(<%=c.getId()%>,<%=idUsuario%>)">Reservar</button></td>
-                                </tr>
-                                <%}%>
-                            </tbody>
-                        </table>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -142,8 +111,6 @@
             <div class="footer-below">
                 <div class="container">
                     <div class="row">
-                        <%String msg = (String) session.getAttribute("Nombre");
-                            out.print(msg);%> 
                         <div class="col-lg-18">
 
                             Universidad de Lima &copy; Ingenieria de Software 2016
@@ -175,3 +142,4 @@
         <script src="js/freelancer.min.js"></script>
     </body>
 </html>
+

@@ -1,9 +1,3 @@
-<%-- 
-    Document   : Index
-    Created on : 23/10/2016, 09:25:42 PM
-    Author     : ronal
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
@@ -54,10 +48,10 @@ String nombre_variable = (String)session.getAttribute("nombre_param");
                         <a href="Cubiculo.jsp">Reservas - Cubiculos</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="Libro.jsp" method ="post" action="MostrarLibros">Renovación - Libros</a>
+                        <a href="MostrarLibros">Renovación - Libros</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="ReservaPC.jsp">Resevas - PC</a>
+                        <a href="MostrarPC">Resevas - PC</a>
                     </li>
                     <ul class="nav navbar-nav navbar-right">
                             <li><a href="index.html"><span
@@ -128,3 +122,4 @@ String nombre_variable = (String)session.getAttribute("nombre_param");
     <script src="js/freelancer.min.js"></script>
 </body>
 </html>
+

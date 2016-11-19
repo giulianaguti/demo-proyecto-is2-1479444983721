@@ -8,9 +8,9 @@ package Servlets;
 import Clases.DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Paolo
  */
-public class RetornoDatos extends HttpServlet {
+public class ReservarPC extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,26 +32,23 @@ public class RetornoDatos extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
+                response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            //ConexSql c = new ConexSql();
-            //c.modificarDatos("Raro");
-            
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RetornoDatos</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>" + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-            
+            DAO dao = new DAO();
+            int cod_al = (int) request.getSession().getAttribute("Codigo");
+            int id_pc = Integer.parseInt(request.getParameter("pcReservar"));
+            int cant_horas = Integer.parseInt(request.getParameter("cantHoras"));
+            StringTokenizer hora = dao.reservarPC(id_pc,cod_al,cant_horas);
+            String hora_inicio=hora.nextToken();
+            String hora_fin=hora.nextToken();
+            request.setAttribute("id",id_pc);
+            request.setAttribute("hora_inicio",hora_inicio);
+            request.setAttribute("hora_fin", hora_fin);
+            request.getRequestDispatcher("PCReservada.jsp").forward(request, response);
         }
     }
 
@@ -70,7 +67,7 @@ public class RetornoDatos extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(RetornoDatos.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReservarPC.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -88,7 +85,7 @@ public class RetornoDatos extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(RetornoDatos.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReservarPC.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

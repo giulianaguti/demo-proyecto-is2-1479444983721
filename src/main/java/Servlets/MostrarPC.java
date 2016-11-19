@@ -8,6 +8,10 @@ package Servlets;
 import Clases.DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author ronal
+ * @author Paolo
  */
-public class Inicio extends HttpServlet {
+public class MostrarPC extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,19 +34,18 @@ public class Inicio extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet Inicio</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet Inicio at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-              
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet MostrarPC</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet MostrarPC at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -58,7 +61,19 @@ public class Inicio extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+    try {
+            ArrayList<Integer> listaPC = new ArrayList();
+            int cod_al = (int) request.getSession().getAttribute("Codigo");
+            response.setContentType("text/html;charset=UTF-8");
+            
+            DAO dao = new DAO();
+            listaPC = dao.listaPcDisponible();
+            
+            request.setAttribute("listaPC", listaPC); 
+            request.getRequestDispatcher("ReservarPC.jsp").forward(request,response);
+        } catch (SQLException ex) {
+            Logger.getLogger(MostrarLibros.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -72,26 +87,7 @@ public class Inicio extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("Inicio Servlet OK");
-        response.setContentType("text/html;charset=UTF-8");
-        int usuario =   Integer.parseInt(request.getParameter("codigo"));
-        String contrasena = request.getParameter("contrasena");
-        System.out.println(usuario);
-        System.out.println(contrasena);
-        DAO dao = new DAO();
-        
-        String nombre = dao.LoginAlumno(usuario, contrasena);
-        if(nombre != "Usuario no encontrado"){
-        request.getSession().setAttribute("Nombre", nombre);
-        request.getSession().setAttribute("Codigo", usuario);
-        
-        
-        response.sendRedirect("Index.jsp");    
-        }else{
-        response.sendRedirect("NoEncontrado.jsp");    
-        }
-        
-
+        processRequest(request, response);
     }
 
     /**

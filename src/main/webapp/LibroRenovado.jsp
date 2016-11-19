@@ -1,11 +1,8 @@
-<%-- 
-    Document   : LibroRenovado
-    Created on : 03/11/2016, 11:53:53 AM
-    Author     : Giuliana
---%>
-
+<%@ page import="java.util.ArrayList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
+
 <html lang="en" style="    background-color: #18bc9c;
       ">
 
@@ -39,7 +36,7 @@
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                         <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand" href="Index.jsp">ULima  </a>
+                    <a class="navbar-brand"  href="bienvenida.jsp">ULima  </a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
@@ -50,10 +47,10 @@
                             <a href="Cubiculo.jsp">Reservas - Cubiculos</a>
                         </li>
                         <li class="page-scroll">
-                            <a href="Libro.jsp">Renovación - Libros</a>
+                            <a href="MostrarLibros">Renovación - Libros</a>
                         </li>
                         <li class="page-scroll">
-                            <a href="ReservaPC.jsp"> Reservas - PC</a>
+                            <a href="MostrarPC"> Reservas - PC</a>
                         </li>
 
 
@@ -123,6 +120,5 @@
 
                         <!-- Theme JavaScript -->
                         <script src="js/freelancer.min.js"></script>
-                        </body>
-                        </html>
-
+    </body>
+</html>

@@ -13,7 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  *
@@ -21,7 +23,7 @@ import java.util.List;
  */
 public class DAO {
     private static Connection con;
-  String url="jdbc:mysql://localhost:3306/bd?user=root&password=root";
+  String url="jdbc:mysql://localhost:3306/ulima?user=root&password=root";
  
 
     public Connection getConexion() {
@@ -136,33 +138,7 @@ public class DAO {
          System.out.println("asignar cubiculo ok!!!!");
         return disponibilidad;
     }
-      public List<PC> getPCs(){
-        List<PC> l=new ArrayList<>();
-        Connection con=getConexion();
-        PC p;
-        try{
-            String strsql = "SELECT * FROM pc where Disponibilidad=1";
-            PreparedStatement pstm = con.prepareStatement(strsql);
 
-            ResultSet rs = pstm.executeQuery();
-            while (rs.next()) {
-                p=new PC();
-                p.setId(rs.getInt("idPC"));
-                p.setDispo(rs.getInt("Disponibilidad"));
-                p.setFin(rs.getTime("HoraFin"));
-                p.setInicio(rs.getTime("HoraInicio"));
-                p.setUbicacion(rs.getString("Ubicación"));
-                l.add(p);
-            }
-            rs.close();
-            pstm.close();
-            con.close();
-        }catch(Exception e){
-            l.add(null);
-        }                
-        
-        return l;
-    }
    
       public boolean reservarPC(int codigo, int pc){
         boolean ok=false;
@@ -189,92 +165,124 @@ public class DAO {
         return ok;
     }
       
-      public List<PC> getTodosPCs(){
-        List<PC> l=new ArrayList<>();
-        Connection con=getConexion();
-        PC p;
-        try{
-            String strsql = "SELECT * FROM pc";
-            PreparedStatement pstm = con.prepareStatement(strsql);
-
-            ResultSet rs = pstm.executeQuery();
-            while (rs.next()) {
-                p=new PC();
-                p.setId(rs.getInt("idPC"));
-                p.setDispo(rs.getInt("Disponibilidad"));
-                p.setFin(rs.getTime("HoraFin"));
-                p.setInicio(rs.getTime("HoraInicio"));
-                p.setUbicacion(rs.getString("Ubicación"));
-                l.add(p);
-            }
-            rs.close();
-            pstm.close();
-            con.close();
-        }catch(Exception e){
-            l.add(null);
-        }                
-        
-        return l;
-    }
+ 
     
 
    
-      public Date modificarDatos(int cod_al, String nombre) throws SQLException{ 
-        PreparedStatement cnsltaReconocerLibro = con.prepareStatement("select * from libro where Nombre='" + nombre + "'");
-        ResultSet dato = cnsltaReconocerLibro.executeQuery();
-        int codlibro = 0;
-        while (dato.next()){
-           codlibro = dato.getInt("idLibro");
-        }
+      public Date modificarDatos(int cod_al, String nombre) throws SQLException {
+          Connection con;
+          con = getConexion();
+          PreparedStatement cnsltaReconocerLibro = con.prepareStatement("select * from libro where nombre='" + nombre + "'");
+          ResultSet dato = cnsltaReconocerLibro.executeQuery();
+          int codlibro = 0;
+          while (dato.next()) {
+              codlibro = dato.getInt("id");
+          }
+          System.out.println(codlibro);
+          PreparedStatement cnsltaReconocerPedido = con.prepareStatement("select * from prestamolibro where codAlumno=" + cod_al + " and codlibro=" + codlibro);
+          ResultSet pedido = cnsltaReconocerPedido.executeQuery();
+          Date fechainicio = null;
+          Date fechafin = null;
+          int renovado = 0;
+          Calendar calendar = Calendar.getInstance();
+          while (pedido.next()) {
+              fechainicio = pedido.getDate("fechaFin");
+              System.out.println(fechainicio + "hola");
+              renovado = pedido.getInt("renovado") + 1;
+          }
+          calendar.setTime(fechainicio);
+          if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
+              calendar.add(Calendar.DAY_OF_YEAR, 1);
+          };
 
-        PreparedStatement cnsltaReconocerPedido = con.prepareStatement("select * from prestamoslibros where id_al=" + cod_al + " and Libro_idlibro=" + codlibro);
-        ResultSet pedido = cnsltaReconocerPedido.executeQuery();
-        Date fechainicio=null;
-        Date fechafin = null;
-        int renovado = 0;
-        Calendar calendar = Calendar.getInstance();
-        while (pedido.next()){
-           fechainicio = pedido.getDate("FechaFin");
-           renovado = pedido.getInt("Renovado")+1;
-        }
-        calendar.setTime(fechainicio);
-        if (calendar.get(Calendar.DAY_OF_WEEK)==1){
-            calendar.add(Calendar.DAY_OF_YEAR,1);
-        };
-        
-        fechainicio = new Date(calendar.getTime().getTime());
-        calendar.add(Calendar.DAY_OF_YEAR,3);
-        if (calendar.get(Calendar.DAY_OF_WEEK)==2){
-            calendar.add(Calendar.DAY_OF_WEEK,1);
-        };
- 
-        fechafin = new Date(calendar.getTime().getTime());
-        PreparedStatement cnsltaModificar;
-        cnsltaModificar = con.prepareStatement("update prestamoslibros set FechaInicio = ?,FechaFin = ?, Renovado = ?" + " where id_al = ? " + "and Libro_idlibro= ?");
-        cnsltaModificar.setDate(1,fechainicio);
-        cnsltaModificar.setDate(2,fechafin);
-        cnsltaModificar.setInt(3,renovado);
-        cnsltaModificar.setInt(4,cod_al);
-        cnsltaModificar.setInt(5,codlibro);
-        cnsltaModificar.executeUpdate();
-        return fechafin;
-    }
+          fechainicio = new Date(calendar.getTime().getTime());
+          calendar.add(Calendar.DAY_OF_YEAR, 3);
+          if (calendar.get(Calendar.DAY_OF_WEEK) == 2) {
+              calendar.add(Calendar.DAY_OF_WEEK, 1);
+          };
+
+          fechafin = new Date(calendar.getTime().getTime());
+          PreparedStatement cnsltaModificar;
+          cnsltaModificar = con.prepareStatement("update prestamolibro set fechaInicio = ?, fechaFin = ?, renovado = ? " + " where codAlumno = ? " + "and codlibro= ?");
+          cnsltaModificar.setDate(1, fechainicio);
+          cnsltaModificar.setDate(2, fechafin);
+          cnsltaModificar.setInt(3, renovado);
+          cnsltaModificar.setInt(4, cod_al);
+          cnsltaModificar.setInt(5, codlibro);
+          cnsltaModificar.executeUpdate();
+          return fechafin;
+      }
+
     
-    public ResultSet leerLibros(int id_al) throws SQLException{
-        
-        
-        PreparedStatement cnsltaLeer;
-        ResultSet datos; 
-        String qr = "";
-        qr = "select lib.nombre, alu.nombre from libro lib \n" +
-             "inner join prestamoslibros prest on prest.Libro_idLibro =lib.idLibro \n" +
-             "inner join alumno alu on alu.codAlumno = prest.id_al \n" +
-             "where prest.id_al =" + "20112449";
-        cnsltaLeer= con.prepareStatement(qr);
-        
-        datos=cnsltaLeer.executeQuery();
-        return datos;
-    }
+      public ArrayList<String> leerLibros(int id_al) throws SQLException {
+          ArrayList<String> nombresLibros = new ArrayList();
+          PreparedStatement cnsltaLeer;
+          ResultSet datos;
+          String qr = "";
+          qr = "select lib.nombre, alu.nombre from libro lib \n"
+                  + "inner join prestamolibro prest on prest.codLibro = lib.id \n"
+                  + "inner join alumno alu on alu.codigo = prest.codAlumno \n"
+                  + "where prest.codAlumno = " + id_al;
+          Connection con;
+          con = getConexion();
+          cnsltaLeer = con.prepareStatement(qr);
+          datos = cnsltaLeer.executeQuery();
+          while (datos.next()) {
+              nombresLibros.add(datos.getString("lib.nombre"));
+          }
+          return nombresLibros;
+      }
+      
+      public ArrayList <Integer> listaPcDisponible() throws SQLException{
+          ArrayList <Integer> listaPc= new ArrayList();
+          PreparedStatement cnsltaLeer;
+          ResultSet datos;
+          String qr = "";
+          qr = "select id from pc where ocupado = 0";
+          Connection con;
+          con = getConexion();
+          cnsltaLeer = con.prepareStatement(qr);
+          datos = cnsltaLeer.executeQuery();
+          while (datos.next()) {
+              listaPc.add(datos.getInt("id"));
+          }
+      return listaPc;
+      }
+      
+      public StringTokenizer reservarPC(int id_pc, int cod_al, int cant_horas) throws SQLException{
+          StringTokenizer hora_intervalo;
+          
+          PreparedStatement cnsltaModificar;
+          ResultSet datos;
+          String qr = ""; 
+          Connection con;
+          
+          qr = "update pc set ocupado = ?, observacion = ? where id = " + id_pc;
+          con = getConexion();
+          cnsltaModificar = con.prepareStatement(qr);
+          cnsltaModificar.setInt(1, 1);
+          cnsltaModificar.setString(2, "Reservado por alumno de codigo - " + cod_al);
+          cnsltaModificar.executeUpdate();
+          
+          Calendar calendario = new GregorianCalendar();
+          int año = calendario.get(Calendar.YEAR);
+          int mes = calendario.get(Calendar.MONTH);
+          int dia = calendario.get(Calendar.DAY_OF_MONTH);
+          int hora =calendario.get(Calendar.HOUR_OF_DAY);
+          int minutos = calendario.get(Calendar.MINUTE) + 10;
+          int segundos = calendario.get(Calendar.SECOND);
+          
+          String horaInicio = año + "-" + mes + "-" + dia + " " + hora + ":" + minutos + ":" + segundos;
+          hora = hora + cant_horas;
+          String horaFin = año + "-" + mes + "-" + dia + " " + hora + ":" + minutos + ":" + segundos;
+          qr = "insert into reservapc(codPC, codAlumno, horaInicio, horaFin) " + 
+                  "VALUES (" + id_pc + ", " + cod_al + ", '" + horaInicio + "', '" + horaFin + "')";     
+          cnsltaModificar = con.prepareStatement(qr);
+          cnsltaModificar.executeUpdate();
+          
+          hora_intervalo = new StringTokenizer(horaInicio + "/" + horaFin, "/");
+          return hora_intervalo;
+      }
 }
 
 
