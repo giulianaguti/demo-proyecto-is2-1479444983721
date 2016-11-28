@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
  */
 public class DAO {
     private static Connection con;
-  String url="jdbc:mysql://localhost:3306/ulima?user=root&password=root";
+  String url="jdbc:mysql://us-cdbr-iron-east-04.cleardb.net:3306/ad_c0fa135f852e7dd?user=b6c141d3953c89&password=0850ab00";
  
 
     public Connection getConexion() {
