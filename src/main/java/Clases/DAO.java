@@ -58,7 +58,7 @@ public class DAO {
         
         try {
             
-            String strsql ="Select * from cubiculo where disponibilidad='1'";
+            String strsql ="Select * from cubiculo where Disponibilidad='1'";
             PreparedStatement ps = con.prepareStatement(strsql);
             ResultSet rs = ps.executeQuery();
             
@@ -87,12 +87,12 @@ public class DAO {
 
         try {
 
-            String strsql = "SELECT * FROM alumno where codAlumno ='" + u +"'";
+            String strsql = "SELECT * FROM alumno where codigo ='" + u +"'";
             PreparedStatement pstm = con.prepareStatement(strsql);
 
             ResultSet rs = pstm.executeQuery();
             if (rs.next() ){   
-            if (rs.getInt("codAlumno") == u && rs.getString("Password").equalsIgnoreCase(p)) {
+            if (rs.getInt("codigo") == u && rs.getString("contraseña").equalsIgnoreCase(p)) {
                     System.out.println("USUARIO Y CONTRASEÑA CORRECTA");
                     ok = rs.getString("Nombre");
                 }else{
