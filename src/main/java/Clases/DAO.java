@@ -23,8 +23,8 @@ import java.util.StringTokenizer;
  */
 public class DAO {
     private static Connection con;
-  String url="jdbc:mysql://us-cdbr-iron-east-04.cleardb.net:3306/ad_c0fa135f852e7dd?user=b6c141d3953c89&password=0850ab00";
- 
+  String url2="jdbc:mysql://localhost:3306/ulima?user=root&password=";
+  String url="jdbc:mysql://eu-cdbr-west-01.cleardb.com:3306/heroku_277e7adf1431bd4?user=bfbdf872f084c2&password=46883963";
 
     public Connection getConexion() {
         //java.sql.Connection con = null;
@@ -58,7 +58,7 @@ public class DAO {
         
         try {
             
-            String strsql ="Select * from cubiculo where Disponibilidad='1'";
+            String strsql ="Select * from cubiculo where disponibilidad='0'";
             PreparedStatement ps = con.prepareStatement(strsql);
             ResultSet rs = ps.executeQuery();
             
