@@ -85,7 +85,7 @@
                 </div>
                 <form method="post" action="ServletAsignar">
                     <div class="form-group row">
-                        <label  class="col-xs-2 col-form-label">N°:</label>
+                        <label  class="col-xs-2 col-form-label">N° Alumnos:</label>
                         <div class="col-xs-10">
                             <input class="form-control" type="number" value="4" id="num">
                         </div>

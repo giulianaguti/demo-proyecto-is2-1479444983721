@@ -116,16 +116,23 @@ public class DAO {
         
         try {
             
-            String strsql ="Select  idCubiculo from cubiculo where disponibilidad='1'";
+            String strsql ="Select  idCubiculo from cubiculo where Disponibilidad='0' and compartido='0'";
             PreparedStatement ps = con.prepareStatement(strsql);
             ResultSet rs = ps.executeQuery();
             
             if(rs.next()){
                 
                 disponibilidad = rs.getInt("Idcubiculo");
+                String strsq2 = "update cubiculo  set disponibilidad ='1' where Idcubiculo='" + disponibilidad + "';";
+                PreparedStatement ps2 = con.prepareStatement(strsq2);
+                ps2.executeUpdate();
+                ps2.close();
+               actualizarhora(rs.getInt("Idcubiculo"));
+                
                 
             }else{
-                disponibilidad=-1;   
+             //   disponibilidad=-1;
+            	AsignarCompartido(rs.getInt("capacidad"));
                 
             }
                 
@@ -135,9 +142,69 @@ public class DAO {
         } catch (Exception e) {
             System.out.println(e);
         }
-         System.out.println("asignar cubiculo ok!!!!");
+        // System.out.println("asignar cubiculo ok!!!!");
         return disponibilidad;
     }
+     
+     public int Vercapacidad(int cubiculo) {
+
+         Connection con = getConexion();
+         int capacidad = 1;
+
+         try {
+
+             String strsql = "Select Capacidad from cubiculo where idcubiculo='" + cubiculo + "'";  
+             PreparedStatement ps = con.prepareStatement(strsql);           
+             ResultSet rs = ps.executeQuery();
+
+             if (rs.next()) {
+                 capacidad = rs.getInt("capacidad");
+             } else {
+                 capacidad = -1;
+             }
+
+             ps.close();
+
+             con.close();
+         } catch (Exception e) {
+             System.out.println(e);
+         }
+         return capacidad;
+     }
+     
+     public int AsignarCompartido(int i) {
+
+         Connection con = getConexion();
+         int aula = -1;
+         int cap =-1;
+         try {
+             
+             String strsql = "Select idCubiculo, Capacidad from cubiculo where disponibilidad='0' and (compartido ='1') and (Capacidad - " + i + " > 0) ";  
+             PreparedStatement ps = con.prepareStatement(strsql);     
+             System.out.println(strsql);
+             ResultSet rs = ps.executeQuery();
+             
+             if (rs.next()) {
+                 aula = rs.getInt("Idcubiculo");
+                 cap = rs.getInt("Capacidad") - i;
+                 String strsq2 = "update cubiculo  set Capacidad = ' " + cap +" ' where Idcubiculo='" + aula + "';";
+                 PreparedStatement ps2 = con.prepareStatement(strsq2);
+                 ps2.executeUpdate();  
+                 ps2.close(); 
+                 actualizarhora(aula);
+             } else {
+                 aula = -1;
+             }
+             
+             ps.close();
+             
+             con.close();
+         } catch (Exception e) {
+             System.out.println(e);
+         }
+         return aula;
+     }
+
 
    
       public boolean reservarPC(int codigo, int pc){
@@ -282,6 +349,33 @@ public class DAO {
           
           hora_intervalo = new StringTokenizer(horaInicio + "/" + horaFin, "/");
           return hora_intervalo;
+      }
+      public void actualizarhora(int aula){
+          Calendar calendario = new GregorianCalendar();
+          int año = calendario.get(Calendar.YEAR);
+          int mes = calendario.get(Calendar.MONTH);
+          int dia = calendario.get(Calendar.DAY_OF_MONTH);
+          int hora =calendario.get(Calendar.HOUR_OF_DAY);
+          int minutos = calendario.get(Calendar.MINUTE) ;
+          int segundos = calendario.get(Calendar.SECOND);
+           String horaInicio = año + "-" + mes + "-" + dia + " " + hora + ":" + minutos + ":" + segundos;
+          hora = hora + 2;
+          String horaFin = año + "-" + mes + "-" + dia + " " + hora + ":" + minutos + ":" + segundos;
+          Connection con = getConexion();
+          try {
+
+          String strsq2 = "update cubiculo  set Hora_Inicio =  '" + horaInicio+ "' , Hora_Fin =  '" + horaFin+ "'   where Idcubiculo='" + aula + "';";
+              System.out.println(strsq2);
+          PreparedStatement ps2 = con.prepareStatement(strsq2);
+          ps2.executeUpdate();  
+          ps2.close();                
+
+              con.close();
+          } catch (Exception e) {
+              System.out.println(e);
+          }
+
+          
       }
 }
 
