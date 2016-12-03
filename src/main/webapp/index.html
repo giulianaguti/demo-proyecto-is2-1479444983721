@@ -1,109 +1,46 @@
 <!DOCTYPE html>
-<!-- <html lang="en">
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <meta charset="utf-8">
-        <title>Universidad de Lima</title>
-        <meta name="generator" content="Bootply" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <!--[if lt IE 9]>
-                <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]
-       <link href="css/styles.css" rel="stylesheet">
-    </head>
-    <body>
-      
-        <div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h1 class="text-center">Universidad de Lima</h1>
-
-
-
-                    </div>
-                    <div class="modal-body">
-                        <form class="form col-md-12 center-block" method ="post" action ="Login">
-                            <div class="form-group">
-                                <input type="text" class="form-control input-lg" placeholder="Código" name="codigo">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control input-lg" placeholder="Contraseña" name="contrasena">
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-primary btn-lg btn-block">Ingresar</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">	
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-    </body>
-</html> -->  
-
 <html>
-    <head>
-        <title>CalcUL</title>
-        <meta charset="utf-8">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" >
-        <link rel="stylesheet" href="/styles/materialize.min.css">
-        <link rel="stylesheet" type="text/css" href="/styles/login.css">
-    </head>
-    
-    <body class="container">
-        <div align="center" class="ventana-login">
-            <h1>CalcUL</h1>
-            <h3>Login</h3>
-            <h6 id ="notificar"></h6>
-            <form>
-                <div class="form-group">
-                    <input type="text" style="width: 150px" class="form-control" id="username" placeholder="Ingresa tu usuario"/>
-                </div>
-                <div class="form-group">
-                    <input type="password" style="width: 150px" class="form-control" id="password" placeholder="Ingresa tu contraseña"/>
-                </div>
-                
-                <input type="button" value="Ingresar" class="waves-effect waves-light btn boton-ingresar" id="but_ingresar">
-                <br> <br>
-                <a href="#modal5">Registro de cuenta</a>
-            </form>
-        </div>
+<head>
+	<title>
+		
+	</title>
 
-        <div class="modal" id="modal5">
-            <div class="modal-content">
-                <h4>Registrarse</h4>
-                <br>
-                <br>
-                <div class="form-group">
-                    <h6 class="notificar_registro"></h6>
-                    <label>usuario nuevo</label>
-                    <br>
-                    <input type="text" style="width:150px" class="form-control" id="new_username" placeholder="Ingresar tu usuario"/>
-                </div>
-                <div class="form-group">
-                    <label>contrasena nueva</label>
-                    <br>
-                    <input type="password" style="width:150px" class="form-control" id="new_password" placeholder="Ingresar tu contrasena" />
-                </div>
-            </div>
-            
-            <div class="modal-footer">
-                <input class="waves-effect waves-light btn-flat boton-registrar" type="button" value="Guardar" id="but_registrar"/>
-                <a class="modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
-            </div>
-        </div>
-        <script src="/js/jquery-3.1.1.min.js"></script>
-        <script src="/js/materialize.min.js"></script>
-        <script src="/js/login.js"></script>
-        
-        
-    </body>
-    
+
+</head>
+<body>
+<form >
+
+<input type="button" id="botonfila" value="botonfila">
+
+<input type="button" id="botoncolumna" value="botoncolumna">
+
+
+<table id="Linea">
+<tr id="letras"><th></th><th>A</th></tr>
+<tr id="1" >
+<td>1</td>
+<td><input  class="enter" id="A1" value=""></td>
+
+</tr>
+
+
+
+
+<tr id=2>
+
+</tr>
+
+
+
+
+</table>
+
+
+
+
+</form>
+<script type="text/javascript" src="jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="index.js"></script>
+</body>
 </html>
+
